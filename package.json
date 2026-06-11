@@ -1,0 +1,27 @@
+{
+  "name": "projectwheel-02",
+  "version": "1.0.0",
+  "description": "PARA DAR UM TRABALHO!",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JuarezReis-12/projectwheel-02.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/JuarezReis-12/projectwheel-02/issues"
+  },
+  "homepage": "https://github.com/JuarezReis-12/projectwheel-02#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "mysql2": "^3.22.5"
+  }
+}
