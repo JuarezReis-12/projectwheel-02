@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projeto Wheel — Simulador de Corrida Profissional</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVBAR — Logo + Links + Login
+       ============================================================ -->
+  <nav class="navbar" id="navbar">
+    <a href="#hero" class="nav-logo">
+      <!-- LOGO TEXTO: substitua por <img src="images/logo.png" alt="Projeto Wheel"> se tiver logo em imagem -->
+      <span class="logo-white">Projeto</span><span class="logo-green"> Wheel</span>
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#hero"     class="nav-link active">HOME</a></li>
+      <li><a href="#features" class="nav-link">SIMULADOR</a></li>
+      <li><a href="#about"    class="nav-link">SOBRE</a></li>
+    </ul>
+    <button class="btn-login">LOGIN</button>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ============================================================
+       HERO — Foto de fundo + título + CTA
+       IMAGEM: defina background-image em .hero dentro de style.css
+       Exemplo: background-image: url('images/hero-bg.jpg');
+       ============================================================ -->
+  <section class="hero" id="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Projeto Wheel</h1>
+      <a href="#features" class="btn-cta">Explore Features</a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       DASHBOARD — Volante + Stats cards
+       ============================================================ -->
+  <section class="dashboard-section" id="dashboard">
+    <div class="dashboard-inner">
+
+      <!-- Esquerda: texto + CTA -->
+      <div class="dash-left">
+        <h2 class="dash-title">Projeto Wheel</h2>
+        <p class="dash-subtitle">SIMULADOR DE CORRIDA PROFISSIONAL</p>
+        <a href="/home/wsousa/Documentos/ds/index2.html"><button class="btn-iniciar" id="btn-iniciar">INICIAR AGORA</button></a>
+      </div>
+
+      <!-- Centro: volante
+           IMAGEM DO VOLANTE: substitua o src por images/volante.png (PNG com transparência) -->
+      <div class="dash-wheel">
+        <img
+          src="img/ov1.png"
+          alt="Volante Projeto Wheel"
+          class="wheel-img"
+          id="wheel-img"
+        />
+      </div>
+
+      <!-- Direita: cards de estatísticas -->
+      <div class="dash-stats">
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <!-- ÍCONE VELOCÍMETRO: substitua pelo ícone SVG real do projeto -->
+            <svg class="stat-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="7.5" stroke="var(--green-primary)" stroke-width="1.4"/>
+              <path d="M10 10L13.5 6.5" stroke="var(--green-primary)" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="10" cy="10" r="1.4" fill="var(--green-primary)"/>
+            </svg>
+            <span class="stat-label">VELOCIDADE</span>
+          </div>
+          <div class="stat-value">
+            <span class="stat-number green" id="stat-vel">280</span>
+            <span class="stat-unit">KM/H</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <!-- ÍCONE FORÇA/RAIO: substitua pelo ícone SVG real -->
+            <svg class="stat-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M11 2L5 11H10L9 18L15 9H10L11 2Z" fill="var(--cyan)" stroke="var(--cyan)" stroke-width="0.3"/>
+            </svg>
+            <span class="stat-label">FORÇA</span>
+          </div>
+          <div class="stat-value">
+            <span class="stat-number cyan">100%</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <!-- ÍCONE CONFIG/ENGRENAGEM: substitua pelo ícone SVG real -->
+            <svg class="stat-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="2.8" stroke="var(--yellow)" stroke-width="1.4"/>
+              <path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.929 4.929l1.415 1.415M13.656 13.656l1.415 1.415M4.929 15.071l1.415-1.415M13.656 6.344l1.415-1.415" stroke="var(--yellow)" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            <span class="stat-label">CONFIG</span>
+          </div>
+          <div class="stat-value">
+            <span class="stat-number yellow">OTIMIZADO</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FEATURES — Gráfico + H-Shifters + Barra inferior
+       ============================================================ -->
+  <section class="features-section" id="features">
+    <div class="section-header">
+      <h2 class="section-title">PROJETO WHEEL</h2>
+      <p class="section-sub">Custom Racing Wheel Settings <span class="pipe">|</span> PC Application</p>
+    </div>
+
+    <div class="features-grid">
+
+      <!-- Card 1: Gráfico curva do pedal -->
+      <div class="feat-card" id="feat-pedal">
+        <p class="feat-label">controle a curva de<br>acionamento dos pedais</p>
+        <div class="chart-box">
+          <canvas id="pedal-chart" aria-label="Curva de acionamento dos pedais"></canvas>
+        </div>
+        <!-- Eixo X labels -->
+        <div class="chart-x-labels" aria-hidden="true">
+          <span>0</span><span>5</span><span>10</span><span>27</span><span>36</span>
+        </div>
+      </div>
+
+      <!-- Card 2: H-Shifter com botões -->
+      <div class="feat-card" id="feat-shifter-btn">
+        <p class="feat-label">cambio Hshifter<br>com botoes</p>
+        <div class="shifter-wrap">
+          <!-- Grade 3x2 representando as marchas/botões do câmbio H -->
+          <div class="shifter-grid">
+            <div class="sg-cell"></div>
+            <div class="sg-cell sg-plus"><span>+</span></div>
+            <div class="sg-cell"></div>
+            <div class="sg-cell"></div>
+            <div class="sg-cell"></div>
+            <div class="sg-cell"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: H-Shifter com potenciômetros -->
+      <div class="feat-card feat-card-pot" id="feat-shifter-pot">
+        <p class="feat-label">cambio Hshifter<br>com potenciometros</p>
+        <div class="shifter-wrap">
+          <div class="shifter-grid">
+            <div class="sg-cell"></div>
+            <div class="sg-cell sg-plus"><span>+</span></div>
+            <div class="sg-cell sg-red-top"></div>
+            <div class="sg-cell"></div>
+            <div class="sg-cell"></div>
+            <div class="sg-cell"></div>
+          </div>
+        </div>
+        <!-- Barra vermelha lateral (potenciômetro) -->
+        <div class="pot-sidebar" aria-hidden="true"></div>
+      </div>
+
+    </div>
+
+    <!-- Barra inferior: FF + volante + pedais + Deadzone -->
+    <div class="bottom-bar">
+
+      <div class="bb-item">
+        <span class="bb-label">FORCE FEEDBACK</span>
+        <div class="led-row" role="meter" aria-valuenow="4" aria-valuemin="0" aria-valuemax="6" aria-label="Force Feedback 4/6">
+          <span class="led on"></span>
+          <span class="led on"></span>
+          <span class="led on"></span>
+          <span class="led on"></span>
+          <span class="led"></span>
+          <span class="led"></span>
+        </div>
+      </div>
+
+      <!-- Volante + pedais (centro) -->
+      <div class="bb-center">
+        <!-- IMAGEM VOLANTE TOP VIEW:
+             Substitua por: <img src="images/volante-top.png" alt="" class="bb-wheel-img"> -->
+        <img src="img/ffrp.png" alt="">
+        <div class="pedals-row">
+          <div class="pedal-col">
+            <!-- ÍCONE GÁS: substitua pelo PNG/SVG real do pedal de gás -->
+            <div class="pedal-icon gas" aria-hidden="true">
+              <img src="img/ped1.png" alt="">
+            </div>
+            <span class="pedal-name">GAS</span>
+          </div>
+          <div class="pedal-col">
+            <!-- ÍCONE FREIO: substitua pelo PNG/SVG real do pedal de freio -->
+            <div class="pedal-icon brake" aria-hidden="true">
+              <img src="img/ped1.png" alt="">
+            </div>
+            <span class="pedal-name">BRAKE</span>
+          </div>
+          <div class="pedal-col">
+            <!-- ÍCONE CLUTCH: substitua pelo PNG/SVG real da embreagem -->
+            <div class="pedal-icon clutch" aria-hidden="true">
+              <img src="img/pedA1.png" alt="">
+            </div>
+            <span class="pedal-name">CLUTCH</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bb-item">
+        <span class="bb-label">PEDAL DEADZONE</span>
+        <div class="led-row" role="meter" aria-valuenow="6" aria-valuemin="0" aria-valuemax="8" aria-label="Pedal Deadzone 6/8">
+          <span class="led led-blue on"></span>
+          <span class="led led-blue on"></span>
+          <span class="led led-blue on"></span>
+          <span class="led led-blue on"></span>
+          <span class="led led-blue on"></span>
+          <span class="led led-blue on"></span>
+          <span class="led led-blue"></span>
+          <span class="led led-blue"></span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ABOUT — Volante com glow + badges + download
+       ============================================================ -->
+  <section class="about-section" id="about">
+    <h2 class="about-title">PROJETO WHEEL</h2>
+
+    <!-- Volante com anel neon
+         IMAGEM: substitua .about-wheel-inner por <img src="images/volante-glow.png"> -->
+    <img src="img/ffr.png" alt="Volante Projeto Wheel" class="about-wheel-img">
+    
+      <!-- Ponto de luz no topo do anel -->
+      <div class="ring-top-dot" aria-hidden="true"></div>
+    </div>
+
+    <!-- Badges -->
+    <div class="badges-row">
+      <div class="badge-item">
+        <!-- ÍCONE PRECISION: substitua pelo SVG real -->
+        <svg class="bi" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+          <circle cx="9" cy="9" r="7" stroke="#888" stroke-width="1.3"/>
+          <circle cx="9" cy="9" r="2.5" stroke="#888" stroke-width="1.3"/>
+          <circle cx="9" cy="9" r="0.8" fill="#888"/>
+        </svg>
+        <span>RACING PRECISION</span>
+      </div>
+      <div class="badge-item">
+        <!-- ÍCONE SETTINGS: substitua pelo SVG real -->
+        <svg class="bi" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+          <circle cx="9" cy="9" r="2.5" stroke="#888" stroke-width="1.3"/>
+          <path d="M9 2v2M9 14v2M2 9h2M14 9h2" stroke="#888" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        <span>CUSTOM SETTINGS</span>
+      </div>
+      <div class="badge-item">
+        <!-- ÍCONE COMPATIBILITY: substitua pelo SVG real -->
+        <svg class="bi" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+          <circle cx="9" cy="9" r="7" stroke="#888" stroke-width="1.3"/>
+          <path d="M5 9l2.5 2.5L13 6.5" stroke="#888" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>FULL COMPATIBILITY</span>
+      </div>
+    </div>
+
+    <p class="features-tag">FEATURES</p>
+    <p class="download-tag">DOWNLOAD</p>
+    <a href="#" class="btn-download-now" id="btn-download">DOWNLOAD NOW</a>
+  </section>
+
+  <!-- Toast global -->
+  <div class="toast" id="toast" aria-live="polite" aria-atomic="true"></div>
+<footer class="footer">
+
+    <p class="phone">
+        Dúvidas? Ligue para <a href="tel:08005918943">0800 591 8943</a>
+    </p>
+
+    <div class="footer-links">
+
+        <div class="column">
+            <a href="#">Perguntas frequentes</a>
+            <a href="#">Relações com investidores</a>
+            <a href="#">Formas de assistir</a>
+            <a href="#">Informações corporativas</a>
+            <a href="#">Só com projeto wheel</a>
+        </div>
+
+        <div class="column">
+            <a href="#">Central de Ajuda</a>
+            <a href="#">Carreiras</a>
+            <a href="#">Termos de Uso</a>
+            <a href="#">Entre em contato</a>
+        </div>
+
+        <div class="column">
+            <a href="#">Conta</a>
+            <a href="#">nos apoe com pix</a>
+            <a href="#">Privacidade</a>
+            <a href="#">Teste de velocidade</a>
+        </div>
+
+        <div class="column">
+            <a href="#">Media Center</a>
+            <a href="#">ajuda com paypal</a>
+            <a href="#">Preferências de cookies</a>
+            <a href="#">Avisos legais</a>
+        </div>
+
+    </div>
+
+    <div class="language-selector">
+        <select>
+            <option>Português</option>
+            <option>English</option>
+        </select>
+    </div>
+
+    <p class="country">wheelbrasil</p>
+
+    <p class="captcha">
+        Esta página é protegida pelo Google reCAPTCHA para garantir que você não é um robô.
+    </p>
+
+</footer>
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personalização — Force Feedback</title>
+  <link rel="stylesheet" href="style2.css" />
+</head>
+<body>
+ 
+  <div class="app-wrapper">
+ 
+    <!-- ========================================
+         HEADER — Número da etapa + Título
+         ======================================== -->
+    <header class="page-header">
+      <!-- Badge de etapa -->
+   
+      
+      <div class="header-text">
+        <p class="header-eyebrow">PERSONALIZAÇÃO</p>
+        <h1 class="header-title">FORCE FEEDBACK</h1>
+        <p class="header-subtitle">
+          Configure o force feedback ideal para você<br />
+          com base no seu estilo e preferências.
+        </p>
+      </div>
+    </header>
+    <div class="fundo-do-bd "></div>
+    <!-- ========================================
+         CONTAINER PRINCIPAL
+         ======================================== -->
+    <main class="settings-container">
+ 
+      <!-- ── Seção 1: Potência do Force Feedback ── -->
+      <section class="setting-card" id="card-potencia">
+        <div class="setting-row">
+          <!-- ÍCONE: substitua o SVG abaixo pelo ícone de raio/potência do seu projeto -->
+          <div class="setting-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13 2L4.5 13.5H11L10 22L19.5 10.5H13L13 2Z" fill="var(--green-primary)" stroke="var(--green-primary)" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+          </div>
+ 
+          <div class="setting-content full-width">
+            <div class="setting-label-row">
+              <label class="setting-label" for="slider-potencia">Potência do Force Feedback</label>
+              <span class="slider-value" id="potencia-value">80%</span>
+            </div>
+            <div class="slider-track-wrapper">
+              <span class="slider-min-label">0%</span>
+              <input
+                type="range"
+                id="slider-potencia"
+                class="custom-slider"
+                min="0"
+                max="100"
+                step="1"
+                value="80"
+                aria-label="Potência do Force Feedback"
+              />
+              <span class="slider-max-label">100%</span>
+            </div>
+          </div>
+        </div>
+      </section>
+ 
+      <!-- ── Seção 2: Jogos que pretende jogar ── -->
+      <section class="setting-card" id="card-jogos">
+        <div class="setting-row align-start">
+          <!-- ÍCONE: substitua pelo ícone de controle/gamepad do seu projeto -->
+          <div class="setting-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="6" width="20" height="12" rx="6" stroke="var(--green-primary)" stroke-width="1.8"/>
+              <circle cx="15.5" cy="12" r="1.2" fill="var(--green-primary)"/>
+              <circle cx="18.5" cy="9.5" r="1.2" fill="var(--green-primary)"/>
+              <circle cx="18.5" cy="14.5" r="1.2" fill="var(--green-primary)"/>
+              <line x1="7" y1="10" x2="7" y2="14" stroke="var(--green-primary)" stroke-width="1.8" stroke-linecap="round"/>
+              <line x1="5" y1="12" x2="9" y2="12" stroke="var(--green-primary)" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+ 
+          <div class="setting-content full-width">
+            <label class="setting-label">Jogos que pretende jogar</label>
+ 
+            <div class="game-grid" id="game-grid">
+ 
+              <!-- ── CARD DE JOGO 1: Assetto Corsa ──
+                   Substitua o atributo src da <img> pelo caminho da imagem do jogo.
+                   O texto dentro de .game-title pode ser alterado livremente. -->
+              <div class="game-card" data-id="assetto-corsa">
+                <button class="game-remove-btn" aria-label="Remover Assetto Corsa">×</button>
+                <!-- IMAGEM DO JOGO — substitua src pelo caminho real -->
+                <img
+                  src="https://placehold.co/100x80/1a0000/ffffff?text=AC"
+                  alt="Assetto Corsa"
+                  class="game-cover"
+                  onerror="this.style.background='#1a0000'; this.src=''"
+                />
+                <span class="game-title">ASSETTO CORSA</span>
+              </div>
+ 
+              <!-- ── CARD DE JOGO 2: iRacing ──
+                   Substitua o src pelo logo/capa real do iRacing -->
+              <div class="game-card" data-id="iracing">
+                <button class="game-remove-btn" aria-label="Remover iRacing">×</button>
+                <!-- IMAGEM DO JOGO — substitua src pelo caminho real -->
+                <img
+                  src="https://placehold.co/100x80/00003a/ffffff?text=iR"
+                  alt="iRacing"
+                  class="game-cover"
+                  onerror="this.style.background='#00003a'; this.src=''"
+                />
+                <span class="game-title">iRacing</span>
+              </div>
+ 
+              <!-- ── CARD DE JOGO 3: F1 23 ──
+                   Substitua o src pelo logo/capa real do F1 23 -->
+              <div class="game-card" data-id="f1-23">
+                <button class="game-remove-btn" aria-label="Remover F1 23">×</button>
+                <!-- IMAGEM DO JOGO — substitua src pelo caminho real -->
+                <img
+                  src="https://placehold.co/100x80/1a1a1a/ffffff?text=F1+23"
+                  alt="F1 23"
+                  class="game-cover"
+                  onerror="this.style.background='#1a1a1a'; this.src=''"
+                />
+                <span class="game-title">FT 23</span>
+              </div>
+ 
+              <!-- ── CARD DE JOGO 4: Automobilista 2 ──
+                   Substitua o src pelo logo/capa real do Automobilista 2 -->
+              <div class="game-card" data-id="automobilista-2">
+                <button class="game-remove-btn" aria-label="Remover Automobilista 2">×</button>
+                <!-- IMAGEM DO JOGO — substitua src pelo caminho real -->
+                <img
+                  src="https://placehold.co/100x80/3a0000/ffffff?text=AM2"
+                  alt="Automobilista 2"
+                  class="game-cover"
+                  onerror="this.style.background='#3a0000'; this.src=''"
+                />
+                <span class="game-title">AUTOMOBILISTA 2</span>
+              </div>
+ 
+              <!-- Botão Adicionar Jogo -->
+              <button class="game-add-btn" id="btn-add-game" aria-label="Adicionar jogo">
+                <span class="add-plus">+</span>
+                <span class="add-label">Adicionar jogo</span>
+              </button>
+ 
+            </div>
+          </div>
+        </div>
+      </section>
+ 
+      <!-- ── Seção 3: Nível de sensação do asfalto ── -->
+      <section class="setting-card" id="card-asfalto">
+        <div class="setting-row">
+          <!-- ÍCONE: substitua pelo ícone de estrada/pista do seu projeto -->
+          <div class="setting-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 3L3 21H21L12 3Z" stroke="var(--green-primary)" stroke-width="1.8" stroke-linejoin="round"/>
+              <line x1="12" y1="8" x2="12" y2="16" stroke="var(--green-primary)" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="2 2"/>
+            </svg>
+          </div>
+ 
+          <div class="setting-content full-width">
+            <div class="segmented-row">
+              <label class="setting-label">Nível de sensação do asfalto</label>
+              <div class="segmented-control" role="group" aria-label="Nível de sensação do asfalto">
+                <button class="seg-btn" data-value="baixo" aria-pressed="false">Baixo</button>
+                <button class="seg-btn" data-value="medio" aria-pressed="false">Médio</button>
+                <button class="seg-btn active" data-value="alto" aria-pressed="true">Alto</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+ 
+      <!-- ── Seção 4: Microcontrolador ── -->
+      <section class="setting-card" id="card-microcontrolador">
+        <div class="setting-row">
+          <!-- ÍCONE: substitua pelo ícone de chip/microcontrolador do seu projeto -->
+          <div class="setting-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="7" y="7" width="10" height="10" rx="1.5" stroke="var(--green-primary)" stroke-width="1.8"/>
+              <line x1="9" y1="4" x2="9" y2="7" stroke="var(--green-primary)" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="12" y1="4" x2="12" y2="7" stroke="var(--green-primary)" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="15" y1="4" x2="15" y2="7" stroke="var(--green-primary)" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="9" y1="17" x2="9" y2="20" stroke="var(--green-primary)" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="12" y1="17" x2="12" y2="20" stroke="var(--green-primary)" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="15" y1="17" x2="15" y2="20" stroke="var(--green-primary)" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="4" y1="9" x2="7" y2="9" stroke="var(--green-primary)" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="4" y1="12" x2="7" y2="12" stroke="var(--green-primary)" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="4" y1="15" x2="7" y2="15" stroke="var(--green-primary)" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="17" y1="9" x2="20" y2="9" stroke="var(--green-primary)" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="17" y1="12" x2="20" y2="12" stroke="var(--green-primary)" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="17" y1="15" x2="20" y2="15" stroke="var(--green-primary)" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+ 
+          <div class="setting-content full-width">
+            <div class="segmented-row">
+              <label class="setting-label" for="select-microcontrolador">Microcontrolador</label>
+              <div class="custom-select-wrapper">
+                <select id="select-microcontrolador" class="custom-select" aria-label="Selecionar microcontrolador">
+                  <option value="esp32">ESP32</option>
+                  <option value="esp8266">ESP8266</option>
+                  <option value="arduino-uno">Arduino Uno</option>
+                  <option value="arduino-mega">Arduino Mega</option>
+                  <option value="raspberry-pi">Raspberry Pi</option>
+                  <option value="stm32">STM32</option>
+                </select>
+                <!-- Ícone de chevron para o select -->
+                <div class="select-arrow" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9L12 15L18 9" stroke="var(--text-secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+ 
+      <!-- ── Seção 5: Nível de feedback do motor ── -->
+      <section class="setting-card" id="card-motor">
+        <div class="setting-row">
+          <!-- ÍCONE: substitua pelo ícone de motor/engrenagem do seu projeto -->
+          <div class="setting-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="3" stroke="var(--green-primary)" stroke-width="1.8"/>
+              <path d="M12 2v2M12 20v2M2 12h2M20 12h2M5.636 5.636l1.414 1.414M16.95 16.95l1.414 1.414M5.636 18.364l1.414-1.414M16.95 7.05l1.414-1.414" stroke="var(--green-primary)" stroke-width="1.8" stroke-linecap="round"/>
+              <!-- Seta indicando rotação -->
+              <path d="M15.5 8.5 Q18 5 16 3" stroke="var(--green-primary)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+            </svg>
+          </div>
+ 
+          <div class="setting-content full-width">
+            <div class="setting-label-row">
+              <label class="setting-label" for="slider-motor">Nível de feedback do motor</label>
+              <span class="slider-value" id="motor-value">85%</span>
+            </div>
+            <div class="slider-track-wrapper no-labels">
+              <input
+                type="range"
+                id="slider-motor"
+                class="custom-slider"
+                min="0"
+                max="100"
+                step="1"
+                value="85"
+                aria-label="Nível de feedback do motor"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+ 
+      <!-- ── Seção 6: Perfil do jogador ── -->
+      <section class="setting-card" id="card-perfil">
+        <div class="setting-row">
+          <!-- ÍCONE: substitua pelo ícone de usuário/perfil do seu projeto -->
+          <div class="setting-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="8" r="4" stroke="var(--green-primary)" stroke-width="1.8"/>
+              <path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke="var(--green-primary)" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+ 
+          <div class="setting-content full-width">
+            <div class="segmented-row">
+              <label class="setting-label">Perfil do jogador</label>
+              <div class="profile-selector" role="group" aria-label="Perfil do jogador">
+ 
+                <!-- Perfil: Drift
+                     ÍCONE DE CARRO: substitua o SVG pelo ícone de drift do seu projeto -->
+                <button class="profile-btn" data-value="drift" aria-pressed="false">
+                  <div class="profile-icon" aria-hidden="true">
+                    <!-- ÍCONE DRIFT — substitua este SVG pelo ícone real de carro para drift -->
+                    <svg viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <ellipse cx="9" cy="19" rx="3" ry="3" stroke="currentColor" stroke-width="1.8"/>
+                      <ellipse cx="23" cy="19" rx="3" ry="3" stroke="currentColor" stroke-width="1.8"/>
+                      <path d="M6 16H26V19H6V16Z" fill="currentColor" opacity="0.2"/>
+                      <path d="M4 16L7 9H20L26 12L28 16H4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                      <path d="M9 9L10 6H20L22 9" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <span class="profile-label">Drift</span>
+                </button>
+ 
+                <!-- Perfil: Corrida (ativo por padrão)
+                     ÍCONE DE BANDEIRADA: substitua o SVG pelo ícone de corrida do seu projeto -->
+                <button class="profile-btn active" data-value="corrida" aria-pressed="true">
+                  <div class="profile-icon" aria-hidden="true">
+                    <!-- ÍCONE CORRIDA (bandeira xadrez) — substitua este SVG pelo ícone real -->
+                    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="8" y="6" width="4" height="4" fill="currentColor"/>
+                      <rect x="12" y="6" width="4" height="4" fill="currentColor" opacity="0.3"/>
+                      <rect x="16" y="6" width="4" height="4" fill="currentColor"/>
+                      <rect x="20" y="6" width="4" height="4" fill="currentColor" opacity="0.3"/>
+                      <rect x="8" y="10" width="4" height="4" fill="currentColor" opacity="0.3"/>
+                      <rect x="12" y="10" width="4" height="4" fill="currentColor"/>
+                      <rect x="16" y="10" width="4" height="4" fill="currentColor" opacity="0.3"/>
+                      <rect x="20" y="10" width="4" height="4" fill="currentColor"/>
+                      <rect x="8" y="14" width="4" height="4" fill="currentColor"/>
+                      <rect x="12" y="14" width="4" height="4" fill="currentColor" opacity="0.3"/>
+                      <rect x="16" y="14" width="4" height="4" fill="currentColor"/>
+                      <rect x="20" y="14" width="4" height="4" fill="currentColor" opacity="0.3"/>
+                      <line x1="8" y1="6" x2="8" y2="26" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                  </div>
+                  <span class="profile-label">Corrida</span>
+                </button>
+ 
+                <!-- Perfil: Estrada
+                     ÍCONE DE ESTRADA: substitua o SVG pelo ícone de estrada do seu projeto -->
+                <button class="profile-btn" data-value="estrada" aria-pressed="false">
+                  <div class="profile-icon" aria-hidden="true">
+                    <!-- ÍCONE ESTRADA — substitua este SVG pelo ícone real de estrada/highway -->
+                    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M5 26L12 6H20L27 26H5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" fill="none"/>
+                      <line x1="16" y1="12" x2="16" y2="20" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2.5 2.5" stroke-linecap="round"/>
+                    </svg>
+                  </div>
+                  <span class="profile-label">Estrada</span>
+                </button>
+ 
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+ 
+    </main>
+ 
+    <!-- ========================================
+         BOTÃO PRINCIPAL: Gerar Perfil Predefinido
+         ======================================== -->
+    <footer class="page-footer">
+      <button class="btn-primary" id="btn-gerar" type="button">
+        <span class="btn-text">GERAR PERFIL PREDEFINIDO</span>
+        <!-- ÍCONE DE RAIO: substitua pelo ícone de raio/flash do seu projeto -->
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M13 2L4.5 13.5H11L10 22L19.5 10.5H13L13 2Z" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </footer>
+ 
+  </div><!-- /.app-wrapper -->
+ 
+  <!-- Modal de adicionar jogo (oculto inicialmente) -->
+  <div class="modal-overlay" id="modal-add-game" role="dialog" aria-modal="true" aria-label="Adicionar novo jogo" hidden>
+    <div class="modal-card">
+      <h2 class="modal-title">Adicionar jogo</h2>
+      <input
+        type="text"
+        id="new-game-name"
+        class="modal-input"
+        placeholder="Nome do jogo"
+        maxlength="40"
+        aria-label="Nome do jogo"
+      />
+      <!-- Campo de imagem — instrução para o desenvolvedor -->
+      <!-- IMAGEM DO JOGO: se quiser adicionar upload de imagem, insira um <input type="file"> aqui -->
+      <div class="modal-actions">
+        <button class="modal-btn-cancel" id="btn-modal-cancel">Cancelar</button>
+        <button class="modal-btn-confirm" id="btn-modal-confirm">Adicionar</button>
+      </div>
+    </div>
+  </div>
+ 
+  <script src="script2.js"></script>
+</body>
+</html>

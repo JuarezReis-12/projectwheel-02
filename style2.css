@@ -1,0 +1,826 @@
+/* ============================================================
+   style.css — Force Feedback Customization UI
+   Tema escuro, glassmorphism leve, responsivo
+   ============================================================ */
+
+/* ── Variáveis CSS Globais ──────────────────────────────────── */
+:root {
+    /* Cores principais */
+    --green-primary: #4ade1e;
+    /* Verde neon principal */
+    --green-hover: #3ec918;
+    /* Verde levemente mais escuro (hover) */
+    --green-dim: #2a8f0f;
+    /* Verde escuro para bordas/sombras */
+
+    /* Backgrounds */
+    --bg-page: #111111;
+    /* Fundo da página */
+    --bg-card: rgba(255, 255, 255, 0.04);
+    /* Card — glass leve */
+    --bg-card-hover: rgba(255, 255, 255, 0.07);
+    --bg-input: rgba(255, 255, 255, 0.06);
+    --bg-btn-inactive: rgba(255, 255, 255, 0.06);
+    /* Botão segmented inativo */
+
+    /* Bordas */
+    --border-card: rgba(255, 255, 255, 0.08);
+    --border-focus: rgba(78, 222, 30, 0.5);
+    --border-game-add: rgba(78, 222, 30, 0.55);
+
+    /* Textos */
+    --text-primary: #ffffff;
+    --text-secondary: #8a8a8a;
+    --text-on-green: #0a1f00;
+    /* Texto sobre fundo verde */
+
+    /* Slider */
+    --slider-track: rgba(255, 255, 255, 0.12);
+    --slider-fill: var(--green-primary);
+    --slider-thumb: var(--green-primary);
+
+    /* Dimensões */
+    --card-radius: 14px;
+    --icon-size: 28px;
+    --transition: 0.18s ease;
+}
+
+/* ── Reset & Base ───────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 24px 16px 48px;
+}
+
+/* ── Wrapper principal ──────────────────────────────────────── */
+.app-wrapper {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.page-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 8px 0 16px;
+}
+
+/* Badge numérico da etapa */
+.step-badge {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    background-color: var(--green-primary);
+    color: var(--text-on-green);
+    font-size: 22px;
+    font-weight: 700;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    margin-top: 6px;
+}
+
+.header-text {
+    flex: 1;
+    text-align: center;
+}
+
+.header-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.header-title {
+    font-size: clamp(26px, 6vw, 34px);
+    font-weight: 900;
+    color: var(--green-primary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin-bottom: 8px;
+}
+
+.header-subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* ============================================================
+   CARDS DE CONFIGURAÇÃO — glassmorphism leve
+   ============================================================ */
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.setting-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: var(--card-radius);
+    padding: 16px 18px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: background var(--transition);
+}
+
+.setting-card:hover {
+    background: var(--bg-card-hover);
+}
+
+/* Linha interna do card */
+.setting-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.setting-row.align-start {
+    align-items: flex-start;
+}
+
+/* Ícone lateral verde */
+.setting-icon {
+    flex-shrink: 0;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.setting-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Área de conteúdo que ocupa o restante */
+.setting-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.setting-content.full-width {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Label padrão */
+.setting-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+/* Linha de label + valor do slider */
+.setting-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Valor numérico à direita */
+.slider-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    min-width: 46px;
+    text-align: right;
+}
+
+/* ============================================================
+   SLIDER CUSTOMIZADO
+   ============================================================ */
+.slider-track-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.slider-track-wrapper.no-labels {
+    gap: 0;
+}
+
+.slider-min-label,
+.slider-max-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.custom-slider {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 5px;
+    border-radius: 99px;
+    outline: none;
+    cursor: pointer;
+    /* A cor da trilha preenchida é definida via JS com background gradiente */
+    background: linear-gradient(to right,
+            var(--green-primary) 0%,
+            var(--green-primary) var(--fill, 80%),
+            var(--slider-track) var(--fill, 80%),
+            var(--slider-track) 100%);
+    transition: background var(--transition);
+}
+
+/* Thumb — WebKit */
+.custom-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--green-primary);
+    cursor: pointer;
+    border: 3px solid var(--bg-page);
+    box-shadow: 0 0 0 2px var(--green-dim);
+    transition: transform var(--transition);
+}
+
+.custom-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+}
+
+.custom-slider::-webkit-slider-thumb:active {
+    transform: scale(1.0);
+}
+
+/* Thumb — Firefox */
+.custom-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--green-primary);
+    cursor: pointer;
+    border: 3px solid var(--bg-page);
+    box-shadow: 0 0 0 2px var(--green-dim);
+}
+
+/* Focus ring acessível */
+.custom-slider:focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+/* ============================================================
+   GRID DE JOGOS
+   ============================================================ */
+.game-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+/* Card de jogo individual */
+.game-card {
+    position: relative;
+    width: 96px;
+    height: 88px;
+    border-radius: 10px;
+    overflow: visible;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* Imagem de capa do jogo */
+.game-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Nome do jogo (overlay na parte inferior) */
+.game-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.82));
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 4px 5px 5px;
+    border-radius: 0 0 10px 10px;
+    text-align: center;
+    line-height: 1.2;
+    pointer-events: none;
+}
+
+/* Botão de remover o jogo */
+.game-remove-btn {
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #333;
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    transition: background var(--transition), color var(--transition);
+    padding: 0;
+}
+
+.game-remove-btn:hover {
+    background: #e03;
+    color: #4f4a4a;
+    border-color: #e03;
+}
+
+/* Botão "Adicionar jogo" — borda tracejada verde */
+.game-add-btn {
+    width: 96px;
+    height: 88px;
+    border-radius: 10px;
+    border: 2px dashed var(--border-game-add);
+    background: transparent;
+    color: var(--green-primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+    transition: background var(--transition), border-color var(--transition);
+    flex-shrink: 0;
+}
+
+.game-add-btn:hover {
+    background: rgba(78, 222, 30, 0.07);
+    border-color: var(--green-primary);
+}
+
+.add-plus {
+    font-size: 26px;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--green-primary);
+}
+
+.add-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.2;
+    color: var(--green-primary);
+}
+
+/* ============================================================
+   CONTROLE SEGMENTADO (Baixo / Médio / Alto)
+   ============================================================ */
+.segmented-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.segmented-control {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.seg-btn {
+    padding: 7px 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--bg-btn-inactive);
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.seg-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.09);
+    color: var(--text-primary);
+}
+
+.seg-btn.active {
+    background: var(--green-primary);
+    color: var(--text-on-green);
+    border-color: var(--green-primary);
+    font-weight: 700;
+}
+
+.seg-btn:focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 2px;
+}
+
+/* ============================================================
+   SELECT CUSTOMIZADO — Microcontrolador
+   ============================================================ */
+.custom-select-wrapper {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.custom-select {
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--bg-input);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 40px 8px 14px;
+    cursor: pointer;
+    outline: none;
+    min-width: 140px;
+    transition: border-color var(--transition);
+}
+
+.custom-select:focus {
+    border-color: var(--border-focus);
+}
+
+/* Seta do select */
+.select-arrow {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+}
+
+.select-arrow svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* ============================================================
+   SELETOR DE PERFIL (Drift / Corrida / Estrada)
+   ============================================================ */
+.profile-selector {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.profile-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--bg-btn-inactive);
+    color: var(--text-secondary);
+    cursor: pointer;
+    min-width: 76px;
+    transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.profile-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.09);
+    color: var(--text-primary);
+}
+
+.profile-btn.active {
+    border-color: var(--green-primary);
+    color: var(--green-primary);
+    background: rgba(78, 222, 30, 0.08);
+}
+
+.profile-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.profile-label {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.profile-btn:focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 2px;
+}
+
+/* ============================================================
+   BOTÃO PRINCIPAL — "GERAR PERFIL PREDEFINIDO"
+   ============================================================ */
+.page-footer {
+    margin-top: 8px;
+}
+
+.btn-primary {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 18px 24px;
+    border-radius: var(--card-radius);
+    background: var(--green-primary);
+    color: var(--text-on-green);
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: background var(--transition), transform var(--transition);
+}
+
+.btn-primary:hover {
+    background: var(--green-hover);
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+.btn-primary:focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 3px;
+}
+
+.btn-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   MODAL — Adicionar Jogo
+   ============================================================ */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 16px;
+    backdrop-filter: blur(4px);
+}
+
+.modal-overlay[hidden] {
+    display: none;
+}
+
+.modal-card {
+    background: #1c1c1c;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--card-radius);
+    padding: 24px;
+    width: 100%;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    animation: modalIn 0.2s ease;
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.modal-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.modal-input {
+    background: var(--bg-input);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 14px;
+    padding: 10px 14px;
+    outline: none;
+    width: 100%;
+    transition: border-color var(--transition);
+}
+
+.modal-input:focus {
+    border-color: var(--border-focus);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.modal-btn-cancel {
+    padding: 9px 18px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+    transition: background var(--transition);
+}
+
+.modal-btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--text-primary);
+}
+
+.modal-btn-confirm {
+    padding: 9px 20px;
+    border-radius: 8px;
+    border: none;
+    background: var(--green-primary);
+    color: var(--text-on-green);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background var(--transition);
+}
+
+.modal-btn-confirm:hover {
+    background: var(--green-hover);
+}
+
+/* ============================================================
+   TOAST de confirmação (feedback ao gerar perfil)
+   ============================================================ */
+.toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #1f1f1f;
+    border: 1px solid var(--green-dim);
+    color: var(--green-primary);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 99px;
+    z-index: 200;
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+@media (max-width: 480px) {
+    body {
+        padding: 16px 12px 36px;
+    }
+
+    .page-header {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .header-text {
+        text-align: left;
+    }
+
+    .segmented-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .segmented-control {
+        width: 100%;
+    }
+
+    .seg-btn {
+        flex: 1;
+        padding: 7px 10px;
+        text-align: center;
+    }
+
+    .profile-selector {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .profile-btn {
+        flex: 1;
+        min-width: 64px;
+        padding: 8px 8px;
+    }
+
+    .custom-select {
+        min-width: 110px;
+    }
+
+    .game-card,
+    .game-add-btn {
+        width: 84px;
+        height: 76px;
+    }
+
+    .add-label {
+        font-size: 9px;
+    }
+}
+
+@media (max-width: 360px) {
+    .header-title {
+        font-size: 22px;
+    }
+
+    .game-card,
+    .game-add-btn {
+        width: 74px;
+        height: 68px;
+    }
+}
+
+/* ============================================================
+   ACESSIBILIDADE — preferência de movimento reduzido
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}
