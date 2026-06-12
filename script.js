@@ -268,4 +268,3 @@ document.addEventListener('DOMContentLoaded', () => {
   // Pequeno delay para garantir que Chart.js (defer) esteja pronto
   setTimeout(initPedalChart, 100);
 });
-
