@@ -337,14 +337,20 @@
     <!-- ========================================
          BOTÃO PRINCIPAL: Gerar Perfil Predefinido
          ======================================== -->
-    <footer class="page-footer">
-      <button class="btn-primary" id="btn-gerar" type="button">
+    <footer class="page-footer" style="display: flex; gap: 10px; margin-top: 20px;">
+      
+      <button class="btn-primary" id="btn-gerar" type="button" style="flex: 2;">
         <span class="btn-text">GERAR PERFIL PREDEFINIDO</span>
-        <!-- ÍCONE DE RAIO: substitua pelo ícone de raio/flash do seu projeto -->
-        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M13 2L4.5 13.5H11L10 22L19.5 10.5H13L13 2Z" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
-        </svg>
       </button>
+
+      <button class="btn-primary" id="btn-atualizar" type="button" style="flex: 1; background-color: #2a8f0f;">
+        <span class="btn-text">ATUALIZAR</span>
+      </button>
+
+      <button class="btn-primary" id="btn-deletar" type="button" style="flex: 1; background-color: #ef4444;">
+        <span class="btn-text">DELETAR</span>
+      </button>
+
     </footer>
  
   </div><!-- /.app-wrapper -->

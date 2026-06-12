@@ -4,24 +4,21 @@ const mysql = require('mysql2');
 
 const app = express();
 
-// Permite a comunicação segura entre o Front-end e o Back-end
 app.use(cors());
 app.use(express.json());
 
-// ==========================================================
-// 1. CONFIGURAÇÃO DO BANCO DE DADOS (phpMyAdmin)
-// ==========================================================
+// CONFIGURAÇÃO DO BANCO DE DADOS
 const db = mysql.createPool({
     host: 'localhost',
-    user: 'root',             // Usuário padrão do XAMPP
-    password: '',             // Senha padrão do XAMPP (vazia)
-    database: 'projeto_wheel', // Nome exato do seu banco de dados
+    user: 'root',             
+    password: '',             
+    database: 'Projeto_wheel', 
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
 });
 
-// Teste automático de conexão com o banco ao iniciar o servidor
+// Teste de conexão
 db.getConnection((err, connection) => {
     if (err) {
         console.error('Erro crítico ao conectar no phpMyAdmin:', err.message);
@@ -31,39 +28,54 @@ db.getConnection((err, connection) => {
     }
 });
 
-// ==========================================================
-// 2. ROTA PARA RECEBER E SALVAR OS DADOS DO SCRIPT2.JS
-// ==========================================================
+// 1. ROTA DE INSERÇÃO (C)
 app.post('/api/perfis', (req, res) => {
-    // Coleta as variáveis com os nomes exatos enviados pelo script2.js
     const { perfilJogador, microcontrolador, potencia, feedbackMotor, nivelAsfalto, jogos } = req.body;
-
-    // Comando SQL correspondente às colunas da sua tabela perfis_ffb
-    const sql = `INSERT INTO perfis_ffb 
-                 (perfil_direcao, microcontrolador, forca_ffb, amortecimento, friccao, jogos) 
-                 VALUES (?, ?, ?, ?, ?, ?)`;
-
-    // Converte a lista de jogos em formato texto string JSON para o MySQL aceitar
+    const sql = `INSERT INTO perfis_ffb (perfil_direcao, microcontrolador, forca_ffb, amortecimento, friccao, jogos) VALUES (?, ?, ?, ?, ?, ?)`;
     const jogosJSON = JSON.stringify(jogos || []);
 
-    // Executa a inserção mapeando os dados para as colunas corretas
     db.query(sql, [perfilJogador, microcontrolador, potencia, feedbackMotor, nivelAsfalto, jogosJSON], (err, result) => {
-        if (err) {
-            console.error('Erro ao executar o comando SQL:', err);
-            return res.status(500).json({ error: 'Erro interno ao salvar os dados no banco.' });
-        }
-        
-        // Retorna o ID gerado para o Front-end exibir o Toast de sucesso
-        res.status(201).json({ 
-            message: 'Configuração gravada com sucesso!', 
-            id: result.insertId 
-        });
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(201).json({ message: 'Gravado com sucesso!', id: result.insertId });
     });
 });
 
-// ==========================================================
-// 3. INICIALIZAÇÃO DO SERVIDOR (PORTA FIXA 3000)
-// ==========================================================
+// 2. ROTA DE ATUALIZAÇÃO - UPDATE (U)
+// O :id na URL identifica qual perfil será modificado
+app.put('/api/perfis/:id', (req, res) => {
+    const { id } = req.params;
+    const { perfilJogador, microcontrolador, potencia, feedbackMotor, nivelAsfalto, jogos } = req.body;
+    
+    const sql = `UPDATE perfis_ffb 
+                 SET perfil_direcao = ?, microcontrolador = ?, forca_ffb = ?, amortecimento = ?, friccao = ?, jogos = ? 
+                 WHERE id = ?`;
+    const jogosJSON = JSON.stringify(jogos || []);
+
+    db.query(sql, [perfilJogador, microcontrolador, potencia, feedbackMotor, nivelAsfalto, jogosJSON, id], (err, result) => {
+        if (err) {
+            console.error('Erro ao atualizar no SQL:', err);
+            return res.status(500).json({ error: 'Erro ao atualizar dados.' });
+        }
+        res.json({ message: 'Perfil atualizado com sucesso!' });
+    });
+});
+
+// 3. ROTA DE EXCLUSÃO - DELETE (D)
+// O :id na URL identifica qual perfil será deletado
+app.delete('/api/perfis/:id', (req, res) => {
+    const { id } = req.params;
+    const sql = `DELETE FROM perfis_ffb WHERE id = ?`;
+
+    db.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error('Erro ao deletar no SQL:', err);
+            return res.status(500).json({ error: 'Erro ao deletar dados.' });
+        }
+        res.json({ message: 'Perfil deletado com sucesso!' });
+    });
+});
+
+// INICIALIZAÇÃO
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Servidor do Project Wheel ativo em http://localhost:${PORT}`);

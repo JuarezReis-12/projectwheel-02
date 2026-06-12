@@ -173,9 +173,9 @@ btnGerar.addEventListener('click', () => {
 
   console.log('[Force Feedback] Perfil gerado:', perfil);
 
-  // ==========================================================
+  
   // DISPARA OS DADOS PARA O BACKEND (PORTA 3000)
-  // ==========================================================
+  
   fetch('http://localhost:3000/api/perfis', {
     method: 'POST',
     headers: {
@@ -187,7 +187,7 @@ btnGerar.addEventListener('click', () => {
   .then(data => {
     if (data.id) {
       // Exibe o toast com o ID vindo direto do phpMyAdmin
-      showToast('✓ Perfil salvo no phpMyAdmin! ID: ' + data.id);
+      showToast('✓ Perfil salvo ID: ' + data.id);
     } else {
       showToast('❌ Erro ao salvar: ' + data.error);
     }
@@ -203,15 +203,107 @@ btnGerar.addEventListener('click', () => {
   setTimeout(() => { btnGerar.style.transform = ''; }, 180);
 });
 
-/* ── Toast de notificação ────────────────────────────────────── */
+// VARIÁVEL GLOBAL PARA GUARDAR O ID DO PERFIL ATUAL
+let idPerfilAtual = null;
+
+/* ── Modificação do btnGerar  para salvar o id ── */
+btnGerar.addEventListener('click', () => {
+  const perfil = {
+    perfilJogador:    perfilAtivo,
+    microcontrolador: selectMicro.value,
+    potencia:         parseInt(sliderPotencia.value, 10),
+    feedbackMotor:    parseInt(sliderMotor.value, 10),
+    nivelAsfalto:     sensacaoAsfalto,
+    jogos:            jogosSelecionados
+  };
+
+  fetch('http://localhost:3000/api/perfis', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(perfil)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.id) {
+      idPerfilAtual = data.id; // Guarda o ID gerado pelo banco de dados!
+      showToast('✓ Perfil salvo no phpMyAdmin! ID: ' + data.id);
+    } else {
+      showToast('❌ Erro ao salvar: ' + data.error);
+    }
+  })
+  .catch(error => {
+    console.error(error);
+    showToast('❌ Servidor offline.');
+  });
+});
+
+/*  FUNCIONALIDADE DE UPDATE (ATUALIZAR O PERFIL NO BANCO)  */
+
+const btnAtualizar = document.getElementById('btn-atualizar');
+btnAtualizar.addEventListener('click', () => {
+  if (!idPerfilAtual) {
+    showToast('⚠️ Salve um perfil primeiro antes de atualizar!');
+    return;
+  }
+
+  // Captura os dados atuais dos sliders modificados na tela
+  const perfilModificado = {
+    perfilJogador:    perfilAtivo,
+    microcontrolador: selectMicro.value,
+    potencia:         parseInt(sliderPotencia.value, 10),
+    feedbackMotor:    parseInt(sliderMotor.value, 10),
+    nivelAsfalto:     sensacaoAsfalto,
+    jogos:            jogosSelecionados
+  };
+
+  // Envia os dados usando o método PUT e o ID armazenado
+  fetch(`http://localhost:3000/api/perfis/${idPerfilAtual}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(perfilModificado)
+  })
+  .then(response => response.json())
+  .then(data => {
+    showToast('✓ ' + data.message);
+  })
+  .catch(error => {
+    console.error(error);
+    showToast('❌ Erro ao atualizar no servidor.');
+  });
+});
+
+/*FUNCIONALIDADE DE DELETE (DELETAR O PERFIL DO BANCO) */
+const btnDeletar = document.getElementById('btn-deletar');
+btnDeletar.addEventListener('click', () => {
+  if (!idPerfilAtual) {
+    showToast('⚠️ Nenhum perfil ativo na tela para deletar!');
+    return;
+  }
+
+  if (confirm('Tem certeza de que deseja deletar permanentemente esta configuração do banco de dados?')) {
+    // Envia o comando DELETE usando o ID armazenado
+    fetch(`http://localhost:3000/api/perfis/${idPerfilAtual}`, {
+      method: 'DELETE'
+    })
+    .then(response => response.json())
+    .then(data => {
+      showToast('🗑️ ' + data.message);
+      idPerfilAtual = null; // Limpa o ID da tela, pois ele não existe mais no banco
+    })
+    .catch(error => {
+      console.error(error);
+      showToast('❌ Erro ao deletar no servidor.');
+    });
+  }
+});
+
+/* ── Toast de notificação */
 
 let toastEl = null;
 let toastTimer = null;
 
-/**
- * Exibe uma mensagem toast na parte inferior da tela.
- * @param {string} msg
- */
+/* Exibe uma mensagem toast na parte inferior da tela.
+ @param {string} msg */
 function showToast(msg) {
   // Remove toast anterior se ainda estiver visível
   if (toastEl) {
@@ -225,6 +317,7 @@ function showToast(msg) {
   document.body.appendChild(toastEl);
 
   // Força reflow antes de adicionar a classe de animação
+
   void toastEl.offsetWidth;
   toastEl.classList.add('show');
 
@@ -234,5 +327,5 @@ function showToast(msg) {
   }, 2600);
 }
 
-/* ── Inicialização final ────────────────────────────────────── */
+/* ── Inicialização final */
 console.log('[Project Wheel UI] Módulo carregado e pronto.');
