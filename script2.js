@@ -1,3 +1,10 @@
+/* ============================================================
+   script.js — Force Feedback Customization UI
+   Lógica de sliders, segmented controls, perfis, jogos e CRUD
+   ============================================================ */
+
+/* ── Utilitários ─────────────────────────────────────────────── */
+
 /**
  * Atualiza o gradiente de preenchimento do slider conforme o valor.
  * @param {HTMLInputElement} slider
@@ -29,16 +36,12 @@ sliderMotor.addEventListener('input',    () => syncSlider(sliderMotor,    motorV
 /* ── Controle Segmentado: Nível de sensação do asfalto ──────── */
 
 const segBtns = document.querySelectorAll('.seg-btn');
-let sensacaoAsfalto = 'medio'; // valor padrão inicial coincidente com a classe .active no HTML
+let sensacaoAsfalto = 'medio'; // valor padrão inicial
 
 segBtns.forEach(btn => {
   btn.addEventListener('click', () => {
-    // Remove .active de todos os botões do grupo
     segBtns.forEach(b => b.classList.remove('active'));
-    // Adiciona .active ao clicado
     btn.classList.add('active');
-    
-    // Armazena a escolha (ex: 'baixo', 'medio', 'alto')
     sensacaoAsfalto = btn.dataset.value || btn.textContent.trim().toLowerCase();
     console.log('[Sensação Asfalto] Alterado para:', sensacaoAsfalto);
   });
@@ -47,13 +50,12 @@ segBtns.forEach(btn => {
 /* ── Seletores de Perfil (Estrada, Pista, Drift) ─────────────── */
 
 const profileBtns = document.querySelectorAll('.profile-btn');
-let perfilAtivo   = 'estrada'; // valor padrão coincidente com .active
+let perfilAtivo   = 'estrada'; // valor padrão
 
 profileBtns.forEach(btn => {
   btn.addEventListener('click', () => {
     profileBtns.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    
     perfilAtivo = btn.dataset.profile || btn.textContent.trim().toLowerCase();
     console.log('[Perfil] Alterado para:', perfilAtivo);
   });
@@ -99,19 +101,16 @@ const inputNewGame   = document.getElementById('new-game-name');
 const gamesGrid      = document.getElementById('games-grid');
 
 if (btnAddGameCard && modalAddGame) {
-  // Abrir Modal
   btnAddGameCard.addEventListener('click', () => {
     modalAddGame.removeAttribute('hidden');
     inputNewGame.focus();
   });
 
-  // Fechar Modal (Cancelar)
   btnCancelModal.addEventListener('click', () => {
     modalAddGame.setAttribute('hidden', '');
     inputNewGame.value = '';
   });
 
-  // Salvar Novo Jogo
   btnSaveModal.addEventListener('click', () => {
     const nomeJogo = inputNewGame.value.trim();
     if (!nomeJogo) {
@@ -119,25 +118,17 @@ if (btnAddGameCard && modalAddGame) {
       return;
     }
 
-    // Cria um ID simples slugificado para o dataset
     const gameId = nomeJogo.toLowerCase().replace(/[^a-z0-9]/g, '-');
 
-    // Cria o elemento novo card na árvore
     const newCard = document.createElement('button');
     newCard.type = 'button';
-    newCard.className = 'game-card active'; // Já nasce selecionado
+    newCard.className = 'game-card active';
     newCard.dataset.game = gameId;
-    newCard.innerHTML = `
-      <span class="game-title">${nomeJogo}</span>
-    `;
+    newCard.innerHTML = `<span class="game-title">${nomeJogo}</span>`;
 
-    // Insere na lista antes do botão de adicionar
     gamesGrid.insertBefore(newCard, btnAddGameCard);
-    
-    // Adiciona o id à lista de selecionados
     jogosSelecionados.push(gameId);
 
-    // Adiciona o listener de clique para este novo botão dinâmico
     newCard.addEventListener('click', () => {
       const isSelected = newCard.classList.toggle('active');
       if (isSelected) {
@@ -148,164 +139,127 @@ if (btnAddGameCard && modalAddGame) {
       console.log('[Jogos Selecionados]:', jogosSelecionados);
     });
 
-    // Fecha e limpa
     modalAddGame.setAttribute('hidden', '');
     inputNewGame.value = '';
     showToast(`✓ ${nomeJogo} adicionado!`);
-    console.log('[Jogos Selecionados após inserção]:', jogosSelecionados);
   });
 }
 
-/* ── Evento do botão Gerar Perfil Integrado ao Banco de Dados ── */
+/* ── INTEGRAÇÃO COM O BANCO DE DADOS (CRUD) ─────────────────── */
 
 const btnGerar = document.getElementById('btn-gerar');
+let idPerfilAtual = null; // Guarda o ID do perfil ativo para Update e Delete
 
-btnGerar.addEventListener('click', () => {
-  // Cria o objeto contendo o estado atual da UI
-  const perfil = {
-    perfilJogador:    perfilAtivo,
-    microcontrolador: selectMicro.value,
-    potencia:         parseInt(sliderPotencia.value, 10),
-    feedbackMotor:    parseInt(sliderMotor.value, 10),
-    nivelAsfalto:     sensacaoAsfalto,
-    jogos:            jogosSelecionados
-  };
+// Bloqueia duplicações limpando escutas antigas na memória do botão
+if (btnGerar) {
+  btnGerar.replaceWith(btnGerar.cloneNode(true));
+}
+const btnGerarNovo = document.getElementById('btn-gerar');
 
-  console.log('[Force Feedback] Perfil gerado:', perfil);
+// 1. AÇÃO DE SALVAR (CREATE)
+if (btnGerarNovo) {
+  btnGerarNovo.addEventListener('click', () => {
+    const perfil = {
+      perfilJogador:    perfilAtivo,
+      microcontrolador: selectMicro.value,
+      potencia:         parseInt(sliderPotencia.value, 10),
+      feedbackMotor:    parseInt(sliderMotor.value, 10),
+      nivelAsfalto:     sensacaoAsfalto,
+      jogos:            jogosSelecionados
+    };
 
-  
-  // DISPARA OS DADOS PARA O BACKEND (PORTA 3000)
-  
-  fetch('http://localhost:3000/api/perfis', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(perfil)
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.id) {
-      // Exibe o toast com o ID vindo direto do phpMyAdmin
-      showToast('✓ Perfil salvo ID: ' + data.id);
-    } else {
-      showToast('❌ Erro ao salvar: ' + data.error);
-    }
-  })
-  .catch(error => {
-    console.error('Erro ao conectar ao servidor Node.js:', error);
-    showToast('❌ Servidor offline. Ligue o node server.js!');
-  });
-  // ==========================================================
+    console.log('[Force Feedback] Enviando perfil:', perfil);
 
-  // Anima o botão brevemente
-  btnGerar.style.transform = 'scale(0.97)';
-  setTimeout(() => { btnGerar.style.transform = ''; }, 180);
-});
-
-// VARIÁVEL GLOBAL PARA GUARDAR O ID DO PERFIL ATUAL
-let idPerfilAtual = null;
-
-/* ── Modificação do btnGerar  para salvar o id ── */
-btnGerar.addEventListener('click', () => {
-  const perfil = {
-    perfilJogador:    perfilAtivo,
-    microcontrolador: selectMicro.value,
-    potencia:         parseInt(sliderPotencia.value, 10),
-    feedbackMotor:    parseInt(sliderMotor.value, 10),
-    nivelAsfalto:     sensacaoAsfalto,
-    jogos:            jogosSelecionados
-  };
-
-  fetch('http://localhost:3000/api/perfis', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(perfil)
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.id) {
-      idPerfilAtual = data.id; // Guarda o ID gerado pelo banco de dados!
-      showToast('✓ Perfil salvo no phpMyAdmin! ID: ' + data.id);
-    } else {
-      showToast('❌ Erro ao salvar: ' + data.error);
-    }
-  })
-  .catch(error => {
-    console.error(error);
-    showToast('❌ Servidor offline.');
-  });
-});
-
-/*  FUNCIONALIDADE DE UPDATE (ATUALIZAR O PERFIL NO BANCO)  */
-
-const btnAtualizar = document.getElementById('btn-atualizar');
-btnAtualizar.addEventListener('click', () => {
-  if (!idPerfilAtual) {
-    showToast('⚠️ Salve um perfil primeiro antes de atualizar!');
-    return;
-  }
-
-  // Captura os dados atuais dos sliders modificados na tela
-  const perfilModificado = {
-    perfilJogador:    perfilAtivo,
-    microcontrolador: selectMicro.value,
-    potencia:         parseInt(sliderPotencia.value, 10),
-    feedbackMotor:    parseInt(sliderMotor.value, 10),
-    nivelAsfalto:     sensacaoAsfalto,
-    jogos:            jogosSelecionados
-  };
-
-  // Envia os dados usando o método PUT e o ID armazenado
-  fetch(`http://localhost:3000/api/perfis/${idPerfilAtual}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(perfilModificado)
-  })
-  .then(response => response.json())
-  .then(data => {
-    showToast('✓ ' + data.message);
-  })
-  .catch(error => {
-    console.error(error);
-    showToast('❌ Erro ao atualizar no servidor.');
-  });
-});
-
-/*FUNCIONALIDADE DE DELETE (DELETAR O PERFIL DO BANCO) */
-const btnDeletar = document.getElementById('btn-deletar');
-btnDeletar.addEventListener('click', () => {
-  if (!idPerfilAtual) {
-    showToast('⚠️ Nenhum perfil ativo na tela para deletar!');
-    return;
-  }
-
-  if (confirm('Tem certeza de que deseja deletar permanentemente esta configuração do banco de dados?')) {
-    // Envia o comando DELETE usando o ID armazenado
-    fetch(`http://localhost:3000/api/perfis/${idPerfilAtual}`, {
-      method: 'DELETE'
+    fetch('http://localhost:3000/api/perfis', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(perfil)
     })
     .then(response => response.json())
     .then(data => {
-      showToast('🗑️ ' + data.message);
-      idPerfilAtual = null; // Limpa o ID da tela, pois ele não existe mais no banco
+      if (data.id) {
+        idPerfilAtual = data.id; // Guarda o ID retornado pelo MySQL
+        showToast('✓ Perfil salvo no phpMyAdmin! ID: ' + data.id);
+      } else {
+        showToast('❌ Erro ao salvar: ' + data.error);
+      }
     })
     .catch(error => {
       console.error(error);
-      showToast('❌ Erro ao deletar no servidor.');
+      showToast('❌ Servidor offline. Ligue o node server.js!');
     });
-  }
-});
 
-/* ── Toast de notificação */
+    btnGerarNovo.style.transform = 'scale(0.97)';
+    setTimeout(() => { btnGerarNovo.style.transform = ''; }, 180);
+  });
+}
+
+// 2. AÇÃO DE ATUALIZAR (UPDATE)
+const btnAtualizar = document.getElementById('btn-atualizar');
+if (btnAtualizar) {
+  btnAtualizar.addEventListener('click', () => {
+    if (!idPerfilAtual) {
+      showToast('⚠️ Salve um perfil primeiro antes de atualizar!');
+      return;
+    }
+
+    const perfilModificado = {
+      perfilJogador:    perfilAtivo,
+      microcontrolador: selectMicro.value,
+      potencia:         parseInt(sliderPotencia.value, 10),
+      feedbackMotor:    parseInt(sliderMotor.value, 10),
+      nivelAsfalto:     sensacaoAsfalto,
+      jogos:            jogosSelecionados
+    };
+
+    fetch(`http://localhost:3000/api/perfis/${idPerfilAtual}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(perfilModificado)
+    })
+    .then(response => response.json())
+    .then(data => {
+      showToast('✓ Perfil atualizado com sucesso no banco!');
+    })
+    .catch(error => {
+      console.error(error);
+      showToast('❌ Erro ao atualizar.');
+    });
+  });
+}
+
+// 3. AÇÃO DE DELETAR (DELETE)
+const btnDeletar = document.getElementById('btn-deletar');
+if (btnDeletar) {
+  btnDeletar.addEventListener('click', () => {
+    if (!idPerfilAtual) {
+      showToast('⚠️ Nenhum perfil ativo na tela para deletar!');
+      return;
+    }
+
+    if (confirm('Tem certeza de que deseja eliminar esta configuração do phpMyAdmin?')) {
+      fetch(`http://localhost:3000/api/perfis/${idPerfilAtual}`, {
+        method: 'DELETE'
+      })
+      .then(response => response.json())
+      .then(data => {
+        showToast('🗑️ Perfil deletado do banco de dados!');
+        idPerfilAtual = null; // Reseta o ID
+      })
+      .catch(error => {
+        console.error(error);
+        showToast('❌ Erro ao deletar.');
+      });
+    }
+  });
+}
+
+/* ── Toast de notificação ────────────────────────────────────── */
 
 let toastEl = null;
 let toastTimer = null;
 
-/* Exibe uma mensagem toast na parte inferior da tela.
- @param {string} msg */
 function showToast(msg) {
-  // Remove toast anterior se ainda estiver visível
   if (toastEl) {
     toastEl.remove();
     clearTimeout(toastTimer);
@@ -316,8 +270,6 @@ function showToast(msg) {
   toastEl.textContent = msg;
   document.body.appendChild(toastEl);
 
-  // Força reflow antes de adicionar a classe de animação
-
   void toastEl.offsetWidth;
   toastEl.classList.add('show');
 
@@ -327,5 +279,4 @@ function showToast(msg) {
   }, 2600);
 }
 
-/* ── Inicialização final */
-console.log('[Project Wheel UI] Módulo carregado e pronto.');
+console.log('[Project Wheel UI] Módulo carregado com CRUD completo.');
